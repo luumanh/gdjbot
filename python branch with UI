@@ -1,0 +1,50 @@
+import pyautogui
+import keyboard
+import time
+import tkinter as tk
+
+def aim(x, y, w, h):
+    while True:
+        hp = pyautogui.locateOnScreen('hp.png', region=(x, y, w, h), grayscale=True)
+        if hp is not None:
+            time.sleep(0.1)
+        else:
+            pix = pyautogui.locateOnScreen('target.png', region=(x, y, w, h), grayscale=True)
+            if pix is not None:
+                center = pyautogui.center(pix)
+                pyautogui.click(center.x, center.y)
+
+def kill_switch():
+    exit()
+
+def start_aim():
+    x = int(x_entry.get())
+    y = int(y_entry.get())
+    w = int(w_entry.get())
+    h = int(h_entry.get())
+    keyboard.add_hotkey('v', lambda: aim(x, y, w, h))
+    keyboard.add_hotkey('q', kill_switch)
+
+root = tk.Tk()
+
+x_label = tk.Label(root, text='x:')
+x_entry = tk.Entry(root)
+y_label = tk.Label(root, text='y:')
+y_entry = tk.Entry(root)
+w_label = tk.Label(root, text='width:')
+w_entry = tk.Entry(root)
+h_label = tk.Label(root, text='height:')
+h_entry = tk.Entry(root)
+start_button = tk.Button(root, text='Start', command=start_aim)
+
+x_label.grid(row=0, column=0)
+x_entry.grid(row=0, column=1)
+y_label.grid(row=1, column=0)
+y_entry.grid(row=1, column=1)
+w_label.grid(row=2, column=0)
+w_entry.grid(row=2, column=1)
+h_label.grid(row=3, column=0)
+h_entry.grid(row=3, column=1)
+start_button.grid(row=4, column=0, columnspan=2)
+
+root.mainloop()
